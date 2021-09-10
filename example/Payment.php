@@ -51,6 +51,10 @@ $product->setCommissionType(Product::TAKE_ALL);
 $request->setBuyer($buyer);
 $request->setProductData($product);
 
+// set success info url after payment
+$request->setRedirect_url("https://www.yourdomain.com/success_page"); // WARNING: it's only info page. Do not any action on this page. Just you can show message for your customer.
+
+
 if ($request->execute())
 { // execute request
     try
