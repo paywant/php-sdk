@@ -48,7 +48,7 @@ $config->setAPIKey('TEST'); // API KEY
 $config->setSecretKey('TEST'); // API SECRET
 $config->setServiceBaseUrl('https://secure.paywant.com');
 
-// credit - debit - prepaid card;
+// create request object with config
 $request = new Create($config);
 
 // buyer info.

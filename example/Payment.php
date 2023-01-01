@@ -12,7 +12,7 @@ $config->setAPIKey('TEST'); // API KEY
 $config->setSecretKey('TEST'); // API SECRET
 $config->setServiceBaseUrl('https://secure.paywant.com');
 
-// credit - debit - prepaid card;
+// create request object with config
 $request = new Create($config);
 
 // create object for buyer info.
@@ -52,36 +52,32 @@ $request->setBuyer($buyer);
 $request->setProductData($product);
 
 // set success info url after payment
-$request->setRedirect_url("https://www.yourdomain.com/success_page"); // WARNING: it's only info page. Do not any action on this page. Just you can show message for your customer.
+$request->setRedirect_url('https://www.yourdomain.com/success_page'); // WARNING: it's only info page. Do not any action on this page. Just you can show message for your customer.
 
-
-if ($request->execute())
-{ // execute request
-    try
-    {
+if ($request->execute()) { // execute request
+    try {
         $response = json_decode($request->getResponse());
-        if ($response->status == true)
-        {
+        if ($response->status == true) {
             // for example included payment page in your application but also you can redirect user to $response->message;?>
-                <div id="paywant-area">
-                    <script src="//secure.paywant.com/public/js/paywant.js"></script>
-                    <iframe src="<?php echo $response->message; ?>" id="paywantIframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+			<div id="paywant-area">
+				<script src="//secure.paywant.com/public/js/paywant.js"></script>
+				<iframe src="<?php echo $response->message; ?>"
+					id="paywantIframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
 
-                    <script type="text/javascript">
-                        setTimeout(function(){ 
-                            iFrameResize({ log: false },'#paywantIframe');
-                        }, 1000);
-                    </script>
-                </div>
-            <?php
+				<script type="text/javascript">
+					setTimeout(function() {
+						iFrameResize({
+							log: false
+						}, '#paywantIframe');
+					}, 1000);
+				</script>
+			</div>
+<?php
         }
-    }
-    catch (Exception $ex)
-    {
+    } catch (Exception $ex) {
         echo $ex->getMessage();
     }
-}
-else
-{
+} else {
     echo $request->getError(); // got a error
 }
+?>
