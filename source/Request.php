@@ -20,8 +20,7 @@ class Request extends JsonSerializableModel
 
     public function post(array $body)
     {
-        try
-        {
+        try {
             $curl = curl_init();
 
             $body['apiKey'] = $this->config->getApiKey();
@@ -31,6 +30,7 @@ class Request extends JsonSerializableModel
 
             $header = ['content-type: application/json', 'content-lenght: ' . strlen($data)];
             $header[] = 'SDK-Version: ' . $this->config->getSDKVersion();
+            $header[] = 'User-Agent: ' . $this->config->getUserAgent();
 
             curl_setopt($curl, CURLOPT_URL, $this->config->getServiceBaseUrl() . $this->path);
             curl_setopt($curl, CURLOPT_ENCODING, '');
@@ -43,8 +43,7 @@ class Request extends JsonSerializableModel
             $curlResponse = curl_exec($curl);
             $curlInfo = curl_getinfo($curl);
 
-            if ($curlResponse === false)
-            {
+            if ($curlResponse === false) {
                 $this->error = curl_error($curl);
 
                 return false;
@@ -52,8 +51,7 @@ class Request extends JsonSerializableModel
 
             $this->http_code = $curlInfo['http_code'];
 
-            if ($this->http_code == '200')
-            {
+            if ($this->http_code == '200') {
                 $this->response = $curlResponse;
 
                 return true;
@@ -64,22 +62,20 @@ class Request extends JsonSerializableModel
             curl_close($curl);
 
             return false;
-        }
-        catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
             throw new Exception('Request Class->' . $ex->getMessage());
         }
     }
 
     public function get($query)
     {
-        try
-        {
+        try {
             $curl = curl_init();
 
             $query .= 'hash=' . $this->getHash();
 
             $header[] = 'SDK-Version: ' . $this->config->getSDKVersion();
+            $header[] = 'User-Agent: ' . $this->config->getUserAgent();
 
             curl_setopt($curl, CURLOPT_URL, $this->config->getServiceBaseUrl() . $this->path . '/' . $query);
             curl_setopt($curl, CURLOPT_ENCODING, '');
@@ -91,8 +87,7 @@ class Request extends JsonSerializableModel
             $curlResponse = curl_exec($curl);
             $curlInfo = curl_getinfo($curl);
 
-            if ($curlResponse === false)
-            {
+            if ($curlResponse === false) {
                 $this->error = curl_error($curl);
 
                 return false;
@@ -100,8 +95,7 @@ class Request extends JsonSerializableModel
 
             $this->http_code = $curlInfo['http_code'];
 
-            if ($this->http_code == '200')
-            {
+            if ($this->http_code == '200') {
                 $this->response = $curlResponse;
 
                 return true;
@@ -112,47 +106,33 @@ class Request extends JsonSerializableModel
             curl_close($curl);
 
             return false;
-        }
-        catch (Exception $ex)
-        {
+        } catch (Exception $ex) {
             throw new Exception('Request Class->' . $ex->getMessage());
         }
     }
 
     public function getResponse($object = false)
     {
-        if ($object)
-        {
-            try
-            {
+        if ($object) {
+            try {
                 return json_decode($this->response);
-            }
-            catch (Exception $ex)
-            {
+            } catch (Exception $ex) {
                 new Exception($ex->getMessage());
             }
-        }
-        else
-        {
+        } else {
             return $this->response;
         }
     }
 
     public function getError($object = false)
     {
-        if ($object)
-        {
-            try
-            {
+        if ($object) {
+            try {
                 return json_decode($this->error);
-            }
-            catch (Exception $ex)
-            {
+            } catch (Exception $ex) {
                 new Exception($ex->getMessage());
             }
-        }
-        else
-        {
+        } else {
             return $this->error;
         }
     }

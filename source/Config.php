@@ -7,7 +7,8 @@ class Config
     private $apiKey;
     private $secretKey;
     private $serviceBaseUrl;
-    private $sdkVersion = '1.0.0';
+    private $userAgent = 'Paywant Client';
+    private $sdkVersion = '1.0.2';
 
     public function getSDKVersion()
     {
@@ -42,5 +43,15 @@ class Config
     public function setServiceBaseUrl($serviceBaseUrl)
     {
         $this->serviceBaseUrl = $serviceBaseUrl;
+    }
+
+    public function getUserAgent()
+    {
+        return $this->userAgent;
+    }
+
+    public function setUserAgent($userAgent)
+    {
+        $this->userAgent = $userAgent;
     }
 }
