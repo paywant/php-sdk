@@ -20,13 +20,13 @@ $buyer = new Buyer();
 
 $buyer->setUserAccountName('username'); // if you don't have customers username, please use user email
 $buyer->setUserEmail('customer@email.com'); // customer email address
-$buyer->setUserID('1'); // immutable customer id
+$buyer->setUserID('1'); // immutable customer id currently must be Integer
 
 //create object for product info
 $product = new Product();
 $product->setName('Order ID: 50');
 $product->setAmount(10.54);
-$product->setExtraData(50);
+$product->setExtraData(50); // You can use it for your own purpose. Note: Currently must be Integer
 
 // payment channels (optional) you can set one channel to show your customer
 $paymentChannels = new PaymentChannel();
@@ -59,19 +59,19 @@ if ($request->execute()) { // execute request
         $response = json_decode($request->getResponse());
         if ($response->status == true) {
             // for example included payment page in your application but also you can redirect user to $response->message;?>
-			<div id="paywant-area">
-				<script src="//secure.paywant.com/public/js/paywant.js"></script>
-				<iframe src="<?php echo $response->message; ?>"
-					id="paywantIframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+<div id="paywant-area">
+	<script src="//secure.paywant.com/public/js/paywant.js"></script>
+	<iframe src="<?php echo $response->message; ?>"
+		id="paywantIframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
 
-				<script type="text/javascript">
-					setTimeout(function() {
-						iFrameResize({
-							log: false
-						}, '#paywantIframe');
-					}, 1000);
-				</script>
-			</div>
+	<script type="text/javascript">
+		setTimeout(function() {
+			iFrameResize({
+				log: false
+			}, '#paywantIframe');
+		}, 1000);
+	</script>
+</div>
 <?php
         }
     } catch (Exception $ex) {

@@ -10,7 +10,6 @@ $config->setAPIKey('TEST'); // API KEY
 $config->setSecretKey('TEST'); // API SECRET
 $config->setServiceBaseUrl('https://secure.paywant.com');
 
-// credit - debit - prepaid card;
 $request = new Create($config);
 
 // buyer info.
@@ -23,33 +22,30 @@ $buyer->setUserID('1');
 // set objects to Request
 $request->setBuyer($buyer);
 
-if ($request->execute())
-{ // execute request
-    try
-    {
+if ($request->execute()) { // execute request
+    try {
         $response = json_decode($request->getResponse());
-        if ($response->status == true)
-        {
+        if ($response->status == true) {
             ?>
-                <div id="paywant-area">
-                    <script src="//secure.paywant.com/public/js/paywant.js"></script>
-                    <iframe src="<?php echo $response->message; ?>" id="paywantIframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+<div id="paywant-area">
+	<script src="//secure.paywant.com/public/js/paywant.js"></script>
+	<iframe src="<?php echo $response->message; ?>"
+		id="paywantIframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
 
-                    <script type="text/javascript">
-                        setTimeout(function(){ 
-                            iFrameResize({ log: false },'#paywantIframe');
-                        }, 1000);
-                    </script>
-                </div>
-            <?php
+	<script type="text/javascript">
+		setTimeout(function() {
+			iFrameResize({
+				log: false
+			}, '#paywantIframe');
+		}, 1000);
+	</script>
+</div>
+<?php
         }
-    }
-    catch (Exception $ex)
-    {
+    } catch (Exception $ex) {
         echo $ex->getMessage();
     }
-}
-else
-{
+} else {
     echo $request->getError(); // got a error
 }
+?>
